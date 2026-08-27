@@ -1,0 +1,946 @@
+<!doctype html>
+<title>Minikoparki: EVOX na tle rynku</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f2;
+    --surface:#ffffff;
+    --surface-2:#e4e9ea;
+    --ink:#1a2430;
+    --ink-soft:#4d5c68;
+    --ink-faint:#7c8b96;
+    --line:#d3dadd;
+    --line-strong:#b6c0c4;
+    --accent:#d1551e;
+    --accent-ink:#7a2d0d;
+    --accent-soft:#fbe4d6;
+    --good:#2a7a4f;
+    --good-soft:#e1f0e6;
+    --warn:#a5730b;
+    --warn-soft:#f7ecd6;
+    --bad:#a63d3d;
+    --bad-soft:#f6e2e2;
+    --focus:#1a6ea8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12181d;
+      --surface:#1a2229;
+      --surface-2:#212b32;
+      --ink:#eaf0f2;
+      --ink-soft:#a9b7bf;
+      --ink-faint:#7c8b96;
+      --line:#2b363d;
+      --line-strong:#3a4750;
+      --accent:#ec8250;
+      --accent-ink:#ffd9c2;
+      --accent-soft:#3a2418;
+      --good:#6cbf8f;
+      --good-soft:#1c3126;
+      --warn:#d9a53f;
+      --warn-soft:#332a13;
+      --bad:#e08484;
+      --bad-soft:#3a2020;
+      --focus:#6cb6e8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12181d;
+    --surface:#1a2229;
+    --surface-2:#212b32;
+    --ink:#eaf0f2;
+    --ink-soft:#a9b7bf;
+    --ink-faint:#7c8b96;
+    --line:#2b363d;
+    --line-strong:#3a4750;
+    --accent:#ec8250;
+    --accent-ink:#ffd9c2;
+    --accent-soft:#3a2418;
+    --good:#6cbf8f;
+    --good-soft:#1c3126;
+    --warn:#d9a53f;
+    --warn-soft:#332a13;
+    --bad:#e08484;
+    --bad-soft:#3a2020;
+    --focus:#6cb6e8;
+  }
+
+  *{box-sizing:border-box;}
+  html{color-scheme:light dark;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--focus);}
+  a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+  ::selection{background:var(--accent-soft); color:var(--accent-ink);}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,48px) 96px;}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    background:linear-gradient(180deg, var(--surface-2), var(--bg));
+    border-bottom:1px solid var(--line);
+  }
+  .hero-inner{
+    max-width:1180px; margin:0 auto; padding:clamp(28px,5vw,56px) clamp(16px,4vw,48px) 32px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--accent-ink); background:var(--accent-soft);
+    display:inline-flex; align-items:center; gap:8px;
+    padding:5px 10px; border-radius:3px; font-weight:600;
+  }
+  h1{
+    font-family:"Big Shoulders Display", "Arial Narrow", sans-serif;
+    font-weight:800;
+    font-size:clamp(2.2rem, 5vw, 3.6rem);
+    line-height:.98;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    margin:.5em 0 .3em;
+    color:var(--ink);
+  }
+  .dek{
+    max-width:62ch;
+    color:var(--ink-soft);
+    font-size:1.08rem;
+    margin:0 0 22px;
+  }
+  .meta-strip{
+    display:flex; flex-wrap:wrap; gap:10px 28px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px; color:var(--ink-faint);
+    border-top:1px solid var(--line); padding-top:16px;
+  }
+  .meta-strip strong{color:var(--ink-soft); font-weight:600;}
+
+  nav.jump{
+    display:flex; flex-wrap:wrap; gap:6px 4px;
+    margin-top:20px;
+  }
+  nav.jump a{
+    font-size:13px; color:var(--ink-soft); text-decoration:none;
+    padding:7px 12px; border:1px solid var(--line); border-radius:20px;
+    background:var(--surface);
+    transition:border-color .15s, color .15s;
+  }
+  nav.jump a:hover{border-color:var(--accent); color:var(--accent-ink);}
+
+  /* ---------- Sections ---------- */
+  section{padding-top:56px; scroll-margin-top:20px;}
+  .section-head{
+    display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink); padding-bottom:10px; margin-bottom:22px;
+  }
+  .section-num{
+    font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--accent);
+    font-weight:600;
+  }
+  h2{
+    font-family:"Big Shoulders Display", sans-serif;
+    font-weight:700; font-size:clamp(1.5rem,3vw,2.1rem);
+    margin:0; text-wrap:balance; letter-spacing:-.005em;
+  }
+  .section-sub{
+    color:var(--ink-faint); font-size:.95rem; max-width:68ch; margin:0 0 26px;
+  }
+  h3{
+    font-family:"Big Shoulders Display", sans-serif;
+    font-weight:700; font-size:1.3rem; margin:0 0 4px; letter-spacing:-.005em;
+  }
+
+  /* ---------- Weight class comparison ---------- */
+  .class-block{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:22px clamp(16px,3vw,28px);
+    margin-bottom:22px;
+  }
+  .class-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .class-title{font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint);}
+  .evox-models{font-size:.92rem; color:var(--ink-soft); margin-top:2px;}
+  .evox-models b{color:var(--ink); font-weight:600;}
+  .spread-pill{
+    font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
+    background:var(--good-soft); color:var(--good);
+    padding:6px 12px; border-radius:20px; white-space:nowrap;
+  }
+  .spread-pill.warn{background:var(--warn-soft); color:var(--warn);}
+
+  .bar-chart{margin:18px 0 22px;}
+  .bar-row{display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:center; margin-bottom:8px;}
+  .bar-label{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-faint); text-align:right;}
+  .bar-track{position:relative; height:26px; background:var(--surface-2); border-radius:4px; overflow:visible;}
+  .bar-cost{position:absolute; top:0; bottom:0; left:0; background:var(--ink-faint); opacity:.35; border-radius:4px 0 0 4px;}
+  .bar-range{position:absolute; top:4px; bottom:4px; background:var(--accent); border-radius:3px; opacity:.85;}
+  .bar-tick{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink);}
+  .bar-scale{display:grid; grid-template-columns:120px 1fr; gap:12px; margin-top:2px;}
+  .bar-scale span{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-faint);}
+  .bar-scale-vals{display:flex; justify-content:space-between;}
+  .bar-legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-faint); margin-top:10px;}
+  .bar-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:11px; height:11px; border-radius:2px; display:inline-block;}
+
+  table{width:100%; border-collapse:collapse; font-size:14.5px;}
+  .table-wrap{overflow-x:auto; border-top:1px solid var(--line);}
+  th{
+    text-align:left; font-family:"IBM Plex Mono",monospace; font-weight:600;
+    font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint);
+    padding:10px 10px 8px; white-space:nowrap; border-bottom:1px solid var(--line-strong);
+  }
+  td{padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums; font-family:"IBM Plex Mono",monospace;}
+  .model-name{font-weight:600; color:var(--ink);}
+  .brand-name{color:var(--ink-faint); font-size:12.5px;}
+  .engine-tag{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    padding:2px 7px; border-radius:3px; border:1px solid var(--line-strong); color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .engine-tag.branded{border-color:var(--good); color:var(--good); background:var(--good-soft);}
+  td a.src-link{font-size:12.5px; white-space:nowrap; text-decoration:none; border-bottom:1px dotted currentColor;}
+  .price-note{font-size:11px; color:var(--ink-faint); display:block;}
+
+  /* ---------- Brand directory ---------- */
+  .brand-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:16px;}
+  .brand-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:18px 20px; display:flex; flex-direction:column; gap:10px;
+  }
+  .brand-card summary{
+    cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+  }
+  .brand-card summary::-webkit-details-marker{display:none;}
+  .brand-card summary::after{
+    content:"specyfikacja +"; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-faint);
+    border:1px solid var(--line-strong); border-radius:20px; padding:3px 9px; white-space:nowrap;
+  }
+  .brand-card[open] summary::after{content:"zwiń −";}
+  .brand-range{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--ink-faint); font-weight:400;}
+  .brand-desc{font-size:13.5px; color:var(--ink-soft); margin:0;}
+  .brand-mini-table{margin-top:6px; font-size:13px;}
+  .brand-mini-table th, .brand-mini-table td{padding:6px 6px;}
+  .brand-link{
+    margin-top:auto; font-size:13px; font-weight:600; text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .brand-link::after{content:"→";}
+
+  /* ---------- Standout listings ---------- */
+  .listing-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
+  .listing-card{
+    background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; padding:16px 18px;
+  }
+  .listing-price{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.15rem; color:var(--accent-ink);}
+  .listing-meta{font-size:12.5px; color:var(--ink-faint); margin:4px 0 10px;}
+  .portal-badge{
+    display:inline-block; font-size:10.5px; letter-spacing:.03em; text-transform:uppercase;
+    font-family:"IBM Plex Mono",monospace; background:var(--surface-2); color:var(--ink-soft);
+    padding:2px 7px; border-radius:3px; margin-right:6px;
+  }
+  .listing-card p{font-size:13.5px; margin:0 0 10px; color:var(--ink-soft);}
+  .listing-card a.go{font-size:13px; font-weight:600; text-decoration:none;}
+
+  /* ---------- Marketplace links ---------- */
+  .market-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;}
+  .market-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:14px 16px; text-decoration:none; color:var(--ink);
+    display:flex; flex-direction:column; gap:4px;
+    transition:border-color .15s, transform .15s;
+  }
+  .market-card:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .market-card .name{font-weight:600; font-size:14.5px;}
+  .market-card .desc{font-size:12px; color:var(--ink-faint);}
+  .market-card .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--accent-ink); background:var(--accent-soft); align-self:flex-start;
+    padding:2px 6px; border-radius:3px; margin-top:2px;
+  }
+
+  /* ---------- Takeaways ---------- */
+  .takeaway-list{display:grid; gap:14px; margin:0; padding:0; list-style:none;}
+  .takeaway-list li{
+    display:grid; grid-template-columns:28px 1fr; gap:12px;
+    padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .takeaway-list li:last-child{border-bottom:none;}
+  .takeaway-list .n{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent);}
+  .takeaway-list h4{margin:0 0 3px; font-size:15px; font-weight:600;}
+  .takeaway-list p{margin:0; font-size:13.8px; color:var(--ink-soft);}
+
+  .fact-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px;}
+  .fact-col{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 18px;}
+  .fact-col h4{margin:0 0 10px; font-family:"IBM Plex Mono",monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint);}
+  .fact-col ul{margin:0; padding:0 0 0 16px; font-size:13.5px; color:var(--ink-soft);}
+  .fact-col li{margin-bottom:9px;}
+  .fact-col li b{color:var(--ink); font-weight:600;}
+  .fact-col.known{border-top:3px solid var(--good);}
+  .fact-col.derived{border-top:3px solid var(--warn);}
+  .fact-col.unknown{border-top:3px solid var(--ink-faint);}
+  .src{font-size:11px; color:var(--ink-faint); display:block; margin-top:2px;}
+
+  .estimate-box{
+    background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px;
+    padding:20px 24px; display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;
+  }
+  .estimate-box .figure{font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:2.1rem; color:var(--accent-ink); white-space:nowrap; line-height:1;}
+  .estimate-box .figure small{display:block; font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:.04em; margin-top:4px; color:var(--accent-ink); opacity:.8;}
+  .estimate-box p{margin:0; font-size:13.5px; color:var(--ink); flex:1; min-width:240px;}
+
+  @media (max-width:760px){ .fact-cols{grid-template-columns:1fr;} }
+
+  footer{
+    margin-top:64px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-faint); display:grid; gap:6px;
+  }
+
+  @media (max-width:640px){
+    .bar-row{grid-template-columns:70px 1fr;}
+    .bar-scale{grid-template-columns:70px 1fr;}
+    .bar-label{text-align:left;}
+  }
+</style>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Rozpoznanie rynku · sierpień 2026</span>
+    <h1>Minikoparki chińskich marek — gdzie stoi EVOX</h1>
+    <p class="dek">Cennik i marże EVOX (z poprawioną formułą cła) zestawione z realnymi ofertami — nie cennikami fabrycznymi — porównywalnych, dobrych jakościowo chińskich marek minikoparek sprzedawanych w Polsce i UE. Jeden dokument: skąd EVOX startuje kosztowo i gdzie ma miejsce cenowe na tle konkurencji.</p>
+    <div class="meta-strip">
+      <span><strong>Zakres:</strong> 8 marek, 10 klas wagowych 0,6–3,8 t</span>
+      <span><strong>Portale:</strong> OLX, Allegro, Otomoto, Truck1, Mascus, Machineryline, Machineryzone, sklepy producenckie</span>
+      <span><strong>Ceny:</strong> PLN, w większości netto — oznaczenia przy pozycjach niepewnych</span>
+      <span><strong>Punkt odniesienia EVOX:</strong> koszt własny FOB+transport (bez marży), z arkusza cennika</span>
+    </div>
+    <nav class="jump">
+      <a href="#cennik">Cennik i marże EVOX</a>
+      <a href="#pozycja">Pozycja cenowa</a>
+      <a href="#marki">Katalog marek</a>
+      <a href="#oferty">Konkretne oferty</a>
+      <a href="#szukaj">Gdzie szukać dalej</a>
+      <a href="#widocznosc">Widoczność w Google</a>
+      <a href="#wielkosc">Wielkość rynku</a>
+      <a href="#wnioski">Wnioski</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section id="cennik">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>Cennik i marże EVOX</h2>
+  </div>
+  <p class="section-sub">Baza do porównań w dalszej części raportu: pełna linia 10 modeli EVOX, koszt własny (FOB Qingdao + transport, bez marży) i rzeczywista marża tam, gdzie w arkuszu źródłowym jest już cena sprzedaży na Allegro. Po drodze poprawiłem błąd w formule cła — w jednej kolumnie zwracała #VALUE! zamiast liczby.</p>
+
+  <div class="class-block">
+    <div class="class-top"><div><div class="class-title">Pełna linia modelowa</div><div class="evox-models">Specyfikacja i koszt własny — bez marży, netto</div></div></div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th class="num">Masa robocza</th><th>Silnik</th><th class="num">FOB Qingdao</th><th class="num">Koszt własny PLN*</th></tr></thead>
+      <tbody>
+        <tr><td class="model-name">EX08M</td><td class="num">750 kg</td><td><span class="engine-tag">KOOP 192FE</span></td><td class="num">1 850 $</td><td class="num">8 233 zł</td></tr>
+        <tr><td class="model-name">EX12Q</td><td class="num">900 kg</td><td><span class="engine-tag">KOOP 192FE</span></td><td class="num">2 050 $</td><td class="num">8 979 zł</td></tr>
+        <tr><td class="model-name">EX16M</td><td class="num">1100 kg</td><td><span class="engine-tag">KOOP 192FE</span></td><td class="num">2 800 $</td><td class="num">11 776 zł</td></tr>
+        <tr><td class="model-name">EX18M</td><td class="num">1400 kg</td><td><span class="engine-tag">Laidong 385</span></td><td class="num">4 370 $</td><td class="num">17 854 zł</td></tr>
+        <tr><td class="model-name">EX18M-K</td><td class="num">1200 kg</td><td><span class="engine-tag branded">Kubota D722</span></td><td class="num">5 200 $</td><td class="num">20 950 zł</td></tr>
+        <tr><td class="model-name">EX22M</td><td class="num">1960 kg</td><td><span class="engine-tag branded">Kubota D902</span></td><td class="num">8 100 $</td><td class="num">33 321 zł</td></tr>
+        <tr><td class="model-name">EX25M</td><td class="num">2100 kg</td><td><span class="engine-tag branded">Kubota D902</span></td><td class="num">8 900 $</td><td class="num">36 305 zł</td></tr>
+        <tr><td class="model-name">EX30M</td><td class="num">2300 kg</td><td><span class="engine-tag branded">Kubota D902</span></td><td class="num">9 400 $</td><td class="num">38 170 zł</td></tr>
+        <tr><td class="model-name">EX30Q</td><td class="num">2000 kg</td><td><span class="engine-tag">Laidong 385</span></td><td class="num">7 900 $</td><td class="num">32 575 zł</td></tr>
+        <tr><td class="model-name">EX40M</td><td class="num">3300 kg</td><td><span class="engine-tag branded">Kubota D1703</span></td><td class="num">14 900 $</td><td class="num">58 685 zł</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="bar-legend" style="margin-top:14px;">*FOB Qingdao × kurs USD/PLN 3,73 + transport morski na jednostkę. Bez cła (0% w bieżącym cenniku) i bez marży.</div>
+  </div>
+
+  <div class="class-block">
+    <div class="class-top">
+      <div><div class="class-title">Marża tam, gdzie mamy cenę sprzedaży</div><div class="evox-models">5 z 10 modeli ma już wycenę rynkową (Allegro) w arkuszu źródłowym — reszta czeka na decyzję cenową</div></div>
+      <span class="spread-pill">średnia marża: 32%</span>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th class="num">Koszt własny</th><th class="num">Cena Allegro (netto)</th><th class="num">Zysk</th><th class="num">Marża</th></tr></thead>
+      <tbody>
+        <tr><td class="model-name">EX16M</td><td class="num">11 776 zł</td><td class="num">21 691 zł</td><td class="num">9 915 zł</td><td class="num">45,7%</td></tr>
+        <tr><td class="model-name">EX18M-K</td><td class="num">20 950 zł</td><td class="num">33 455 zł</td><td class="num">12 505 zł</td><td class="num">37,4%</td></tr>
+        <tr><td class="model-name">EX22M</td><td class="num">33 321 zł</td><td class="num">35 122 zł</td><td class="num">1 801 zł</td><td class="num" style="color:var(--warn)">5,1%</td></tr>
+        <tr><td class="model-name">EX30M</td><td class="num">38 170 zł</td><td class="num">54 805 zł</td><td class="num">16 635 zł</td><td class="num">30,4%</td></tr>
+        <tr><td class="model-name">EX30Q</td><td class="num">32 575 zł</td><td class="num">54 805 zł</td><td class="num">22 230 zł</td><td class="num">40,6%</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="listing-grid">
+    <div class="listing-card">
+      <span class="portal-badge">poprawione</span>
+      <div class="listing-meta" style="margin-top:8px;">Błąd formuły cła</div>
+      <p>Wiersz "cło" w arkuszu źródłowym mnożył kolejne kolumny przez wynik z sąsiedniej kolumny zamiast przez stałą stawkę — dawało to błąd #VALUE! w pierwszej kolumnie. Poprawiłem odwołanie na $B$37 (stałą stawkę) we wszystkich 10 kolumnach.</p>
+    </div>
+    <div class="listing-card">
+      <span class="portal-badge">brak danych</span>
+      <div class="listing-meta" style="margin-top:8px;">5 modeli bez wyceny</div>
+      <p>EX08M, EX12Q, EX18M, EX25M i EX40M nie mają jeszcze ceny sprzedaży w arkuszu — kolejna sekcja pokazuje, po ile sprzedają porównywalne modele konkurencji w tych klasach wagowych, więc może to być punkt wyjścia do wyceny.</p>
+    </div>
+  </div>
+</section>
+
+<section id="pozycja">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>Pozycja cenowa EVOX na tle konkurencji</h2>
+  </div>
+  <p class="section-sub">Dla każdej klasy wagowej: pasek pokazuje koszt własny EVOX (szary) na tle przedziału cen detalicznych, po jakich porównywalne chińskie marki faktycznie sprzedają nowe maszyny w Polsce. Im szerszy pomarańczowy pasek nad szarym znacznikiem — tym większe pole na marżę.</p>
+
+  <!-- Class 0.6-0.9t -->
+  <div class="class-block">
+    <div class="class-top">
+      <div>
+        <div class="class-title">Klasa 0,6–0,9 t</div>
+        <div class="evox-models">EVOX <b>EX08M</b> (750 kg, koszt 8 233 zł) · <b>EX12Q</b> (900 kg, koszt 8 979 zł)</div>
+      </div>
+      <span class="spread-pill">rynek: 16 500–31 990 zł detalicznie</span>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">EX08M/EX12Q</span>
+        <div class="bar-track">
+          <div class="bar-cost" style="width:9%"></div>
+          <div class="bar-range" style="left:17%; width:33%"></div>
+          <div class="bar-tick" style="left:9%"></div>
+        </div>
+      </div>
+      <div class="bar-scale"><span></span><div class="bar-scale-vals"><span>0 zł</span><span>16 000 zł</span><span>32 000 zł</span></div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Marka / model</th><th>Waga</th><th>Silnik</th><th class="num">Cena</th><th>Portal / źródło</th></tr></thead>
+      <tbody>
+        <tr><td><span class="model-name">Berger Kraus BK800B</span><br><span class="brand-name">Berger Kraus</span></td><td>850 kg</td><td><span class="engine-tag">nieznany</span></td><td class="num">24 477 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://bergerkraus.pl/pl/p/Mini-Koparka-Berger-Kraus-BK800B-z-lyzka-380mm/72" target="_blank" rel="noopener">bergerkraus.pl</a></td></tr>
+        <tr><td><span class="model-name">Berger Kraus BK900A</span></td><td>900 kg</td><td><span class="engine-tag">nieznany</span></td><td class="num">22 017 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://bergerkraus.pl/pl/p/Mini-Koparka-Berger-Kraus-BK900A-z-lyzka-380mm-/243" target="_blank" rel="noopener">bergerkraus.pl</a></td></tr>
+        <tr><td><span class="model-name">APS KME08</span></td><td>~800 kg</td><td><span class="engine-tag">KOOP</span></td><td class="num">17 900 zł</td><td><a class="src-link" href="https://www.olx.pl/d/oferta/minikoparka-gasienicowa-aps-kme08-nowa-2025-gwarancja-dostepna-CID5-ID15xLgy.html" target="_blank" rel="noopener">OLX</a></td></tr>
+        <tr><td><span class="model-name">Günter Grossmann GG800</span></td><td>~800 kg</td><td><span class="engine-tag">nieznany</span></td><td class="num">21 900–31 990 zł<span class="price-note">netto, wg wyposażenia</span></td><td><a class="src-link" href="https://guntershop.pl/pl/c/Koparka-GG800/61" target="_blank" rel="noopener">guntershop.pl</a></td></tr>
+        <tr><td><span class="model-name">Kingway Eco6 RS</span></td><td>~700–800 kg</td><td><span class="engine-tag">chiński gen.</span></td><td class="num">20 900 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://importerkoparek.eu/en/product/excavator-eco6-rs-2/" target="_blank" rel="noopener">importerkoparek.eu</a></td></tr>
+        <tr><td><span class="model-name">JPC (chińska, model podstawowy)</span></td><td>b.d.</td><td><span class="engine-tag">Kopp</span></td><td class="num">16 500 zł</td><td><a class="src-link" href="https://www.olx.pl/d/oferta/minikoparka-mini-koparka-jpc-chinska-CID5-ID14iRob.html" target="_blank" rel="noopener">OLX</a></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Class 1.0-1.2t -->
+  <div class="class-block">
+    <div class="class-top">
+      <div>
+        <div class="class-title">Klasa 1,0–1,2 t</div>
+        <div class="evox-models">EVOX <b>EX16M</b> (1100 kg, koszt 11 776 zł) · <b>EX18M-K</b> (1200 kg z Kubotą, koszt 20 950 zł)</div>
+      </div>
+      <span class="spread-pill">rynek: 24 999–58 917 zł detalicznie</span>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">EX16M</span>
+        <div class="bar-track">
+          <div class="bar-cost" style="width:8%"></div>
+          <div class="bar-range" style="left:18%; width:38%"></div>
+          <div class="bar-tick" style="left:8%"></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">EX18M-K</span>
+        <div class="bar-track">
+          <div class="bar-cost" style="width:14%"></div>
+          <div class="bar-range" style="left:18%; width:38%"></div>
+          <div class="bar-tick" style="left:14%"></div>
+        </div>
+      </div>
+      <div class="bar-scale"><span></span><div class="bar-scale-vals"><span>0 zł</span><span>30 000 zł</span><span>60 000 zł</span></div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Marka / model</th><th>Waga</th><th>Silnik</th><th class="num">Cena</th><th>Portal / źródło</th></tr></thead>
+      <tbody>
+        <tr><td><span class="model-name">APS KME10 / K10</span></td><td>1050 kg</td><td><span class="engine-tag">KOOP 7 kW</span></td><td class="num">26 900 zł</td><td><a class="src-link" href="https://apsmachines.pl/index.php/produkt/minikoparka-aps-kme10-ramie-skretne/" target="_blank" rel="noopener">apsmachines.pl</a></td></tr>
+        <tr><td><span class="model-name">Berger Kraus BK1000JS</span></td><td>~1000 kg</td><td><span class="engine-tag">nieznany</span></td><td class="num">30 627 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://bergerkraus.pl/pl/p/Mini-Koparka-Berger-Kraus-BK1000JS-JOYSTICK-skretne-ramie-z-lyzka-380mm-/414" target="_blank" rel="noopener">bergerkraus.pl</a></td></tr>
+        <tr><td><span class="model-name">Berger Kraus BK1250KJSR</span></td><td>~1100 kg, kabina</td><td><span class="engine-tag">nieznany</span></td><td class="num">55 227 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://bergerkraus.pl/pl/p/Mini-Koparka-Berger-Kraus-BK1250KJSR-z-kabina-skretne-ramie-regulowane-gasienice-z-lyzka-380mm-/417" target="_blank" rel="noopener">bergerkraus.pl</a></td></tr>
+        <tr><td><span class="model-name">Günter Grossmann GG1100</span></td><td>1050 kg</td><td><span class="engine-tag branded">Kubota 15 KM</span></td><td class="num">40 590 zł<span class="price-note">brutto (~33 000 netto)</span></td><td><a class="src-link" href="https://guntershop.pl/mini-koparka-gasienicowa-gg1100" target="_blank" rel="noopener">guntershop.pl</a></td></tr>
+        <tr><td><span class="model-name">Everun ERE10 PRO</span></td><td>1000–1100 kg</td><td><span class="engine-tag">chiński gen.</span></td><td class="num">34 800 zł</td><td><a class="src-link" href="https://archiwum.allegro.pl/oferta/nowa-minikoparka-everun-ere10-pro-1100kg-lyzka-i11812470718.html" target="_blank" rel="noopener">Allegro (archiwum)</a></td></tr>
+        <tr><td><span class="model-name">Kingway YAMA H12 / H12K</span></td><td>1140–1200 kg</td><td><span class="engine-tag branded">Yanmar/Kubota</span></td><td class="num">32 900–58 917 zł</td><td><a class="src-link" href="https://www.otomoto.pl/maszyny-budowlane/oferta/kingway-yama-h12k-silnik-yanmar-kubota-ID6H53Ma.html" target="_blank" rel="noopener">Otomoto</a></td></tr>
+        <tr><td><span class="model-name">Schmidt AR120</span></td><td>1200 kg</td><td><span class="engine-tag branded">Kubota D722</span></td><td class="num">49 900–55 900 zł</td><td><a class="src-link" href="https://allegro.pl/ogloszenie/minikoparka-schmidt-ar120-nowa-3-lyzki-silnik-kubota-2024-koparka-1200-kg-16390213730" target="_blank" rel="noopener">Allegro</a></td></tr>
+        <tr><td><span class="model-name">STIMA ST11+</span></td><td>1000 kg</td><td><span class="engine-tag">KOOP Euro5</span></td><td class="num">36 900 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://pyrexintermarche.pl/produkt/nowa-minikoparka-stima-st11-koop-z-przyczepa/" target="_blank" rel="noopener">sklep dealerski</a></td></tr>
+        <tr><td><span class="model-name">Rhinoceros XN12EV</span> (elektryczna)</td><td>1200 kg</td><td><span class="engine-tag">elektryczny 4 kW</span></td><td class="num">40 999 zł<span class="price-note">+ VAT</span></td><td><a class="src-link" href="https://www.olx.pl/d/oferta/minikoparka-elektryczna-1200kg-rhinoceros-xn12ev-2025-CID5-ID16dvnB.html" target="_blank" rel="noopener">OLX</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R06 ECO</span></td><td>1018 kg</td><td><span class="engine-tag branded">Kubota Z482</span></td><td class="num">24 999 zł</td><td><a class="src-link" href="https://rippa.pl/products/r06-eco" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Class 1.4-1.8t -->
+  <div class="class-block">
+    <div class="class-top">
+      <div>
+        <div class="class-title">Klasa 1,4–1,8 t</div>
+        <div class="evox-models">EVOX <b>EX18M</b> (1400 kg, koszt 17 854 zł) — najbliższy odpowiednik w tej klasie</div>
+      </div>
+      <span class="spread-pill">rynek: 25 099–86 900 zł detalicznie</span>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">EX18M</span>
+        <div class="bar-track">
+          <div class="bar-cost" style="width:13%"></div>
+          <div class="bar-range" style="left:40%; width:27%"></div>
+          <div class="bar-tick" style="left:13%"></div>
+        </div>
+      </div>
+      <div class="bar-scale"><span></span><div class="bar-scale-vals"><span>0 zł</span><span>65 000 zł</span><span>130 000 zł</span></div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Marka / model</th><th>Waga</th><th>Silnik</th><th class="num">Cena</th><th>Portal / źródło</th></tr></thead>
+      <tbody>
+        <tr><td><span class="model-name">Berger Kraus BK1700JS</span></td><td>1600 kg</td><td><span class="engine-tag branded">Kubota D902</span></td><td class="num">66 297 zł<span class="price-note">promo, cennik 76 137 zł</span></td><td><a class="src-link" href="https://bergerkraus.pl/pl/p/Mini-Koparka-Berger-Kraus-BK1700JS-z-osprzetem-KUBOTA-/335" target="_blank" rel="noopener">bergerkraus.pl</a></td></tr>
+        <tr><td><span class="model-name">Günter Grossmann GG1600</span></td><td>1600 kg</td><td><span class="engine-tag branded">Kubota</span></td><td class="num">52 000–63 960 zł</td><td><a class="src-link" href="https://guntershop.pl/mini-koparka-gasienicowa-gg1600" target="_blank" rel="noopener">guntershop.pl</a></td></tr>
+        <tr><td><span class="model-name">Günter Grossmann GG1700</span></td><td>1700 kg</td><td><span class="engine-tag branded">Kubota</span></td><td class="num">71 700–79 335 zł</td><td><a class="src-link" href="https://allegro.pl/ogloszenie/nowa-minikoparka-gg1700-gunter-silnik-kubota-12217764381" target="_blank" rel="noopener">Allegro</a></td></tr>
+        <tr><td><span class="model-name">STIMA ST18</span></td><td>1800 kg</td><td><span class="engine-tag branded">Perkins Euro5</span></td><td class="num">79 900–86 900 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://sklep-kraftline.pl/produkt/nowa-mini-koparka-stima-st18-1-8t-perkins-dostepna-2/" target="_blank" rel="noopener">sklep dealerski</a></td></tr>
+        <tr><td><span class="model-name">Everun ERE16 / ERE18H</span></td><td>1600 / 1800 kg</td><td><span class="engine-tag branded">Laidong 3TE25</span></td><td class="num">na zapytanie</td><td><a class="src-link" href="https://www.everun.pl/maszyny/minikoparki/mini-koparka-er18h/" target="_blank" rel="noopener">everun.pl</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R10 ECO</span> (+kabina)</td><td>1320 kg</td><td><span class="engine-tag branded">Kubota D722</span></td><td class="num">25 099–26 799 zł</td><td><a class="src-link" href="https://rippa.pl/products/r10-eco" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R13 PRO</span></td><td>1460 kg</td><td><span class="engine-tag branded">Kubota D722</span></td><td class="num">44 499 zł</td><td><a class="src-link" href="https://rippa.pl/products/r13-pro" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R15 ECO</span></td><td>1848 kg</td><td><span class="engine-tag branded">Kubota D902</span></td><td class="num">44 599 zł</td><td><a class="src-link" href="https://rippa.pl/products/r15-eco-kubota" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Class 1.9-2.3t -->
+  <div class="class-block">
+    <div class="class-top">
+      <div>
+        <div class="class-title">Klasa 1,9–2,3 t</div>
+        <div class="evox-models">EVOX <b>EX30Q</b> (2000 kg, 32 575 zł) · <b>EX22M</b> (1960 kg, 33 321 zł) · <b>EX25M</b> (2100 kg, 36 305 zł) · <b>EX30M</b> (2300 kg, 38 170 zł)</div>
+      </div>
+      <span class="spread-pill">rynek: 67 000–91 590 zł detalicznie</span>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">EX30Q</span>
+        <div class="bar-track"><div class="bar-cost" style="width:18%"></div><div class="bar-range" style="left:38%; width:26%"></div><div class="bar-tick" style="left:18%"></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">EX22M</span>
+        <div class="bar-track"><div class="bar-cost" style="width:18%"></div><div class="bar-range" style="left:38%; width:26%"></div><div class="bar-tick" style="left:18%"></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">EX25M</span>
+        <div class="bar-track"><div class="bar-cost" style="width:20%"></div><div class="bar-range" style="left:38%; width:26%"></div><div class="bar-tick" style="left:20%"></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">EX30M</span>
+        <div class="bar-track"><div class="bar-cost" style="width:21%"></div><div class="bar-range" style="left:38%; width:26%"></div><div class="bar-tick" style="left:21%"></div></div>
+      </div>
+      <div class="bar-scale"><span></span><div class="bar-scale-vals"><span>0 zł</span><span>90 000 zł</span><span>180 000 zł</span></div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Marka / model</th><th>Waga</th><th>Silnik</th><th class="num">Cena</th><th>Portal / źródło</th></tr></thead>
+      <tbody>
+        <tr><td><span class="model-name">APS KME20 / K20</span></td><td>1920–2000 kg</td><td><span class="engine-tag">Laidong 385</span> / <span class="engine-tag branded">Kubota</span></td><td class="num">68 900–74 900 zł</td><td><a class="src-link" href="https://allegro.pl/ogloszenie/minikoparka-aps-kme20-nowa-silnik-kubota-2025-koparka-2000-kg-12611244081" target="_blank" rel="noopener">Allegro</a></td></tr>
+        <tr><td><span class="model-name">Schmidt AR200</span></td><td>1980 kg</td><td><span class="engine-tag branded">Kubota D902 / Yanmar</span></td><td class="num">74 900–79 900 zł<span class="price-note">netto</span></td><td><a class="src-link" href="https://allegro.pl/ogloszenie/minikoparka-schmidt-ar200-2t-silnik-kubota-2026-koparka-3-lyzki-zero-tail-16390359065" target="_blank" rel="noopener">Allegro</a></td></tr>
+        <tr><td><span class="model-name">Rhinoceros XN20</span></td><td>2000 kg</td><td><span class="engine-tag">13 KM</span></td><td class="num">sprawdź ofertę</td><td><a class="src-link" href="https://www.ceneo.pl/116848073" target="_blank" rel="noopener">Ceneo</a></td></tr>
+        <tr><td><span class="model-name">Rhinoceros XN22</span></td><td>~2200 kg</td><td><span class="engine-tag">b.d.</span></td><td class="num">~91 590 zł</td><td><a class="src-link" href="https://www.truck1-pl.com/maszyny-budowlane/minikoparki/rhinoceros" target="_blank" rel="noopener">Truck1</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R18 PRO</span> (+kabina)</td><td>2440 kg</td><td><span class="engine-tag branded">Kubota D1105</span></td><td class="num">67 000 zł</td><td><a class="src-link" href="https://rippa.pl/products/r18-pro-kubota-engine" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Class 2.7-3.8t -->
+  <div class="class-block">
+    <div class="class-top">
+      <div>
+        <div class="class-title">Klasa 2,7–3,8 t</div>
+        <div class="evox-models">EVOX <b>EX40M</b> (3300 kg, koszt 58 685 zł) — najbliżej Schmidt AR280/AR360 wagowo</div>
+      </div>
+      <span class="spread-pill warn">rynek: 82 999–129 500 zł, część cen "na zapytanie"</span>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <span class="bar-label">EX40M</span>
+        <div class="bar-track"><div class="bar-cost" style="width:30%"></div><div class="bar-range" style="left:46%; width:21%"></div><div class="bar-tick" style="left:30%"></div></div>
+      </div>
+      <div class="bar-scale"><span></span><div class="bar-scale-vals"><span>0 zł</span><span>100 000 zł</span><span>200 000 zł</span></div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Marka / model</th><th>Waga</th><th>Silnik</th><th class="num">Cena</th><th>Portal / źródło</th></tr></thead>
+      <tbody>
+        <tr><td><span class="model-name">APS K30</span></td><td>2800 kg</td><td><span class="engine-tag">Changchai 390</span></td><td class="num">89 900 zł</td><td><a class="src-link" href="https://apsmachines.pl/index.php/produkt/minikoparka-aps-k30-z-kabina/" target="_blank" rel="noopener">apsmachines.pl</a></td></tr>
+        <tr><td><span class="model-name">Schmidt AR280</span></td><td>2780 kg</td><td><span class="engine-tag branded">Kubota D1305 / Yanmar</span></td><td class="num">na zapytanie</td><td><a class="src-link" href="https://www.schmidtmachinery.pl/produkt/koparka-schmidt-ar280/" target="_blank" rel="noopener">schmidtmachinery.pl</a></td></tr>
+        <tr><td><span class="model-name">Schmidt AR360</span></td><td>3810 kg</td><td><span class="engine-tag branded">Kubota D1703</span></td><td class="num">na zapytanie</td><td><a class="src-link" href="https://www.schmidtmachinery.pl/produkt/koparka-schmidt-ar360/" target="_blank" rel="noopener">schmidtmachinery.pl</a></td></tr>
+        <tr><td><span class="model-name">"Kubota Power" XE27E</span></td><td>2700 kg</td><td><span class="engine-tag branded">Kubota</span></td><td class="num">129 500 zł<span class="price-note">aukcja zakończona, punkt odniesienia</span></td><td><a class="src-link" href="https://archiwum.allegro.pl/oferta/koparka-minikoparka-nowa-2-7-tony-kubota-power-xe27e-i15268192551.html" target="_blank" rel="noopener">Allegro (archiwum)</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R22 PRO</span></td><td>3219 kg</td><td><span class="engine-tag branded">Kubota V1505</span></td><td class="num">82 999 zł</td><td><a class="src-link" href="https://rippa.pl/products/r22-pro" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+        <tr><td><span class="model-name">RIPPA R32 PRO</span></td><td>3219 kg<span class="price-note">j.w. wg specyfikacji strony</span></td><td><span class="engine-tag branded">Kubota V1505</span></td><td class="num">103 999 zł</td><td><a class="src-link" href="https://rippa.pl/products/r32-pro" target="_blank" rel="noopener">rippa.pl</a></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section id="marki">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>Katalog marek</h2>
+  </div>
+  <p class="section-sub">Dziewięć realnie działających na polskim/unijnym rynku marek. Osiem to w praktyce chińska maszyna sprzedawana pod zachodnio brzmiącą nazwą własną importera — dokładnie ten sam model biznesowy co EVOX. Jedna, RIPPA, gra inaczej: sprzedaje pod własną, chińską nazwą wprost i deklaruje Kubotę w całej linii. Rozwiń, żeby zobaczyć pełną rozpiętość modeli.</p>
+
+  <div class="brand-grid">
+
+    <details class="brand-card">
+      <summary><h3>APS Machines</h3><span class="brand-range">17,9–89,9 tys. zł</span></summary>
+      <p class="brand-desc">Polski importer, szeroka linia od 0,6 t do 2,8 t. Silniki KOOP/Laidong/Changchai w tańszych wersjach, opcja Kubota w KME20. Sprzedaż własny sklep + OLX + Mascus.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>K06 / KME06</td><td>~0,64–0,69 t</td><td class="num">na zapytanie</td></tr>
+          <tr><td>KME08</td><td>~0,8 t</td><td class="num">17 900 zł</td></tr>
+          <tr><td>KME10 / K10</td><td>1,05 t</td><td class="num">26 900 zł</td></tr>
+          <tr><td>K12</td><td>1,05 t</td><td class="num">na zapytanie</td></tr>
+          <tr><td>KME20 / K20</td><td>1,92–2,0 t</td><td class="num">68 900–74 900 zł</td></tr>
+          <tr><td>K30</td><td>2,8 t</td><td class="num">89 900 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://apsmachines.pl/" target="_blank" rel="noopener">apsmachines.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Berger Kraus</h3><span class="brand-range">22–76,1 tys. zł</span></summary>
+      <p class="brand-desc">Najgęstsza siatka modeli w klasie 0,8–1,7 t — dobrze do porównań "krok po kroku" z małymi EVOX-ami. Kubota dopiero od BK1700JS wzwyż.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>BK800B</td><td>0,85 t</td><td class="num">24 477 zł</td></tr>
+          <tr><td>BK900A / BK900AS</td><td>0,9 t</td><td class="num">22 017–24 477 zł</td></tr>
+          <tr><td>BK950AS</td><td>~0,95 t</td><td class="num">28 857 zł</td></tr>
+          <tr><td>BK1000JS / KJSR</td><td>~1,0 t</td><td class="num">30 627–36 777 zł</td></tr>
+          <tr><td>BK1250KJSR</td><td>~1,1 t</td><td class="num">55 227 zł</td></tr>
+          <tr><td>BK1700JS</td><td>1,6 t</td><td class="num">66 297–76 137 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://bergerkraus.pl/" target="_blank" rel="noopener">bergerkraus.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Schmidt Machinery</h3><span class="brand-range">49,9 tys. zł – na zapytanie</span></summary>
+      <p class="brand-desc">Cztery modele od 1,2 t do 3,8 t, konsekwentnie z silnikami Kubota/Yanmar — pozycjonowanie na "solidny silnik markowy" w każdej klasie, stąd wyższe ceny. Ceny dwóch największych modeli nie są publikowane.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>AR120</td><td>1,2 t</td><td class="num">49 900–55 900 zł</td></tr>
+          <tr><td>AR200</td><td>1,98 t</td><td class="num">74 900–79 900 zł</td></tr>
+          <tr><td>AR280</td><td>2,78 t</td><td class="num">na zapytanie</td></tr>
+          <tr><td>AR360</td><td>3,81 t</td><td class="num">na zapytanie</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://www.schmidtmachinery.pl/koparki/" target="_blank" rel="noopener">schmidtmachinery.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>STIMA</h3><span class="brand-range">36,9–86,9 tys. zł</span></summary>
+      <p class="brand-desc">Trzy modele, sprzedawane przez sieć niezależnych sklepów dealerskich (nie jeden centralny sklep) — sygnał, że to marka-parasol dystrybuowana szerzej niż własny e-commerce.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>ST11+</td><td>1,0 t</td><td class="num">36 900 zł</td></tr>
+          <tr><td>ST13+</td><td>~1,3 t</td><td class="num">46 900 zł (59 900 zł z przyczepą)</td></tr>
+          <tr><td>ST18</td><td>1,8 t</td><td class="num">79 900–86 900 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://sklep-kraftline.pl/produkt/nowa-mini-koparka-stima-st18-1-8t-perkins-dostepna-2/" target="_blank" rel="noopener">przykładowy sklep dealerski</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Günter Grossmann</h3><span class="brand-range">21,9–79,3 tys. zł</span></summary>
+      <p class="brand-desc">Ten sam model co EVOX niemal jeden do jednego: chińska maszyna pod niemiecko brzmiącą nazwą, własny sklep + dealer na Allegro. Jedna negatywna opinia wprost nazywa maszyny "100% chińskimi" i ostrzega przed czasem dostawy części — warto to mieć na uwadze przy budowaniu własnej marki.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>GG800</td><td>~0,8 t</td><td class="num">21 900–31 990 zł</td></tr>
+          <tr><td>GG1100</td><td>1,05 t</td><td class="num">40 590 zł brutto</td></tr>
+          <tr><td>GG1600</td><td>1,6 t</td><td class="num">52 000–63 960 zł</td></tr>
+          <tr><td>GG1700</td><td>1,7 t</td><td class="num">71 700–79 335 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://guntershop.pl/" target="_blank" rel="noopener">guntershop.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Everun</h3><span class="brand-range">34,8 tys. zł – na zapytanie</span></summary>
+      <p class="brand-desc">Jedyna marka tutaj, która występuje pod własnym chińskim nazwiskiem globalnie (nie "zachodni" pseudonim) — oficjalny polski dystrybutor, ceny w większości ustalane indywidualnie po rozmowie, co utrudnia szybkie porównanie.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>ERE08</td><td>~0,8 t</td><td class="num">na zapytanie</td></tr>
+          <tr><td>ERE10 PRO</td><td>1,0–1,1 t</td><td class="num">34 800 zł</td></tr>
+          <tr><td>ERE16</td><td>1,6 t</td><td class="num">na zapytanie</td></tr>
+          <tr><td>ERE18H</td><td>1,8 t</td><td class="num">na zapytanie</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://everun-polska.pl/mini-koparki/" target="_blank" rel="noopener">everun-polska.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Rhinoceros (Xiniu)</h3><span class="brand-range">32,4–91,6 tys. zł</span></summary>
+      <p class="brand-desc">Jedna z najszerzej eksportowanych chińskich fabryk (Shandong Xiniu) — mocna obecność na agregatorach międzynarodowych (Truck1, Europa-Maszyny, Mascus), plus rosnąca oferta wersji elektrycznych.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>XN10-8</td><td>~1,0 t</td><td class="num">~32 391 zł</td></tr>
+          <tr><td>XN12-9 / XN12EV</td><td>1,2 t</td><td class="num">40 999–51 379 zł</td></tr>
+          <tr><td>XN20</td><td>2,0 t</td><td class="num">sprawdź ofertę</td></tr>
+          <tr><td>XN22</td><td>~2,2 t</td><td class="num">~91 590 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://www.truck1-pl.com/maszyny-budowlane/minikoparki/rhinoceros" target="_blank" rel="noopener">truck1-pl.com/…/rhinoceros</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>Kingway</h3><span class="brand-range">20,9–58,9 tys. zł</span></summary>
+      <p class="brand-desc">Sieć regionalnych dealerów (Wrocław, Lubin i inni) pod jedną marką-parasolem "Kingway" / linia modeli "YAMA" — ten sam wariant maszyny sprzedawany z różnym silnikiem (KOOP vs Yanmar vs Kubota) w bardzo różnych cenach.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>Eco5 / Eco6 RS</td><td>~0,6–0,8 t</td><td class="num">20 900 zł</td></tr>
+          <tr><td>VIP10 RS / YAMA R10K</td><td>~1,0 t</td><td class="num">sprawdź ofertę</td></tr>
+          <tr><td>YAMA H12 / H12K</td><td>1,14–1,2 t</td><td class="num">32 900–58 917 zł</td></tr>
+          <tr><td>YAMA S15 / S15K</td><td>~1,5 t</td><td class="num">sprawdź ofertę</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://kingwaypoland.pl/" target="_blank" rel="noopener">kingwaypoland.pl</a>
+    </details>
+
+    <details class="brand-card">
+      <summary><h3>RIPPA</h3><span class="brand-range">25–104 tys. zł</span></summary>
+      <p class="brand-desc">Jedyna marka w tym zestawieniu, która nie udaje zachodniego producenta — sprzedaje pod własną chińską nazwą wprost i konsekwentnie deklaruje Kubotę (Z482/D722/D902/D1105/V1505) na całej linii, łącznie z najtańszym modelem. Słaba widoczność organiczna w Google (sekcja 06) — jeździ głównie na płatnych reklamach, nie na SEO.</p>
+      <div class="table-wrap"><table class="brand-mini-table">
+        <tbody>
+          <tr><td>R06 ECO</td><td>1,02 t</td><td class="num">24 999 zł</td></tr>
+          <tr><td>R10 ECO (+kabina)</td><td>1,32 t</td><td class="num">25 099–26 799 zł</td></tr>
+          <tr><td>R13 PRO</td><td>1,46 t</td><td class="num">44 499 zł</td></tr>
+          <tr><td>R15 ECO</td><td>1,85 t</td><td class="num">44 599 zł</td></tr>
+          <tr><td>R18 PRO (+kabina)</td><td>2,44 t</td><td class="num">67 000 zł</td></tr>
+          <tr><td>R22 PRO / R32 PRO</td><td>3,22 t</td><td class="num">82 999–103 999 zł</td></tr>
+        </tbody>
+      </table></div>
+      <a class="brand-link" href="https://rippa.pl/" target="_blank" rel="noopener">rippa.pl</a>
+    </details>
+
+  </div>
+</section>
+
+<section id="oferty">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>Pojedyncze oferty warte uwagi</h2>
+  </div>
+  <p class="section-sub">Konkretne aktywne lub niedawno zakończone ogłoszenia, które wyznaczają skrajne punkty rynku — najniższą cenę wejścia i najwyższy pułap w klasie zbliżonej do EX40M.</p>
+  <div class="listing-grid">
+    <div class="listing-card">
+      <span class="portal-badge">OLX</span><span class="portal-badge">Sieradz</span>
+      <div class="listing-price">16 500 zł</div>
+      <div class="listing-meta">JPC — bezimienna chińska minikoparka, silnik Kopp, najtańsza realna oferta jaką znaleziono</div>
+      <p>Dolna granica rynku — pokazuje, jak nisko można zejść z ceną wejścia w segmencie "no-name", kosztem marki i serwisu.</p>
+      <a class="go" href="https://www.olx.pl/d/oferta/minikoparka-mini-koparka-jpc-chinska-CID5-ID14iRob.html" target="_blank" rel="noopener">Zobacz ogłoszenie →</a>
+    </div>
+    <div class="listing-card">
+      <span class="portal-badge">Allegro</span><span class="portal-badge">archiwum</span>
+      <div class="listing-price">129 500 zł</div>
+      <div class="listing-meta">"Kubota Power" XE27E, 2,7 t, silnik Kubota</div>
+      <p>Górny punkt odniesienia dla klasy zbliżonej do EX40M — pokazuje sufit, jaki rynek akceptuje przy prawdziwym silniku Kubota i kabinie.</p>
+      <a class="go" href="https://archiwum.allegro.pl/oferta/koparka-minikoparka-nowa-2-7-tony-kubota-power-xe27e-i15268192551.html" target="_blank" rel="noopener">Zobacz ogłoszenie →</a>
+    </div>
+    <div class="listing-card">
+      <span class="portal-badge">Machineryzone</span><span class="portal-badge">EUR</span>
+      <div class="listing-price">16 590 €</div>
+      <div class="listing-meta">Günter Grossmann GG1700, notowanie na portalu międzynarodowym</div>
+      <p>Ten sam model co w polskim sklepie dealerskim, ale wyceniony w euro na agregatorze paneuropejskim — punkt do porównania cen PL vs reszta UE.</p>
+      <a class="go" href="https://www.machineryzone.pl/sprzet-nowy/minikoparki/42483494/gunter-grossmann-gg-1700.html" target="_blank" rel="noopener">Zobacz ogłoszenie →</a>
+    </div>
+  </div>
+</section>
+
+<section id="szukaj">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2>Gdzie szukać dalej — wyszukiwania na żywo</h2>
+  </div>
+  <p class="section-sub">Bezpośrednie linki do wyników wyszukiwania (nie pojedynczych ogłoszeń) — otwierają aktualną listę w danym serwisie, żeby móc samodzielnie śledzić nowe oferty.</p>
+  <div class="market-grid">
+    <a class="market-card" href="https://www.olx.pl/motoryzacja/q-minikoparka/" target="_blank" rel="noopener"><span class="name">OLX.pl</span><span class="desc">wszystkie minikoparki</span><span class="tag">PL</span></a>
+    <a class="market-card" href="https://www.olx.pl/motoryzacja/q-chi%C5%84ska-minikoparka/" target="_blank" rel="noopener"><span class="name">OLX.pl — "chińska"</span><span class="desc">filtrowane pod frazę</span><span class="tag">PL</span></a>
+    <a class="market-card" href="https://allegro.pl/kategoria/maszyny-budowlane-koparki-252961?string=minikoparka" target="_blank" rel="noopener"><span class="name">Allegro</span><span class="desc">kategoria koparki, fraza minikoparka</span><span class="tag">PL</span></a>
+    <a class="market-card" href="https://www.otomoto.pl/maszyny-budowlane/minikoparki" target="_blank" rel="noopener"><span class="name">Otomoto</span><span class="desc">maszyny budowlane → minikoparki</span><span class="tag">PL</span></a>
+    <a class="market-card" href="https://www.truck1-pl.com/maszyny-budowlane/minikoparki" target="_blank" rel="noopener"><span class="name">Truck1</span><span class="desc">nowe i używane, wiele marek chińskich</span><span class="tag">PL/UE</span></a>
+    <a class="market-card" href="https://www.mascus.pl/budownictwo/mini-koparki---7t/" target="_blank" rel="noopener"><span class="name">Mascus</span><span class="desc">minikoparki do 7 t</span><span class="tag">PL/UE</span></a>
+    <a class="market-card" href="https://machineryline.pl/-/minikoparki" target="_blank" rel="noopener"><span class="name">Machineryline</span><span class="desc">międzynarodowy agregator ogłoszeń</span><span class="tag">Międzynarodowe</span></a>
+    <a class="market-card" href="https://www.machineryzone.pl/sprzet-nowy/minikoparki" target="_blank" rel="noopener"><span class="name">Machineryzone</span><span class="desc">sprzęt nowy, notowania w EUR</span><span class="tag">Międzynarodowe</span></a>
+    <a class="market-card" href="https://www.europa-maszyny.pl/minikoparki/2-1-v4/minikoparki-uzywane.html" target="_blank" rel="noopener"><span class="name">Europa-Maszyny</span><span class="desc">agregator europejski, filtr marki</span><span class="tag">Międzynarodowe</span></a>
+    <a class="market-card" href="https://www.made-in-china.com/products-search/hot-china-products/Mini_Excavator.html" target="_blank" rel="noopener"><span class="name">Made-in-China</span><span class="desc">ceny fabryczne / hurtowe — punkt odniesienia kosztowego</span><span class="tag">Fabryka CN</span></a>
+  </div>
+</section>
+
+<section id="widocznosc">
+  <div class="section-head">
+    <span class="section-num">06</span>
+    <h2>Widoczność w Google — kto naprawdę łapie ruch</h2>
+  </div>
+  <p class="section-sub">Dane z Semrush (baza PL) dla popytu na słowa kluczowe i realnej widoczności organicznej domen z sekcji 02. Pod nazwą "EVOX" nie ma żadnej widoczności w Google — nikt tej marki jeszcze nie szuka, więc nie ma czego tracić, zaczynając od wzorców, które już działają u konkurencji.</p>
+
+  <div class="class-block">
+    <div class="class-top">
+      <div><div class="class-title">Popyt na frazy</div><div class="evox-models">Miesięczny wolumen wyszukiwań w Google.pl i trudność pozycjonowania (KD, 0–100)</div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fraza</th><th class="num">Wolumen/mies.</th><th class="num">KD</th><th class="num">CPC</th><th>Co to znaczy</th></tr></thead>
+      <tbody>
+        <tr><td class="model-name">koparka</td><td class="num">27 100</td><td class="num">26</td><td class="num">0,13 zł</td><td>ogólna fraza, połowa ruchu to nie minikoparki — mało precyzyjna</td></tr>
+        <tr><td class="model-name">minikoparka / mini koparka</td><td class="num">14 800</td><td class="num">25</td><td class="num">0,10 zł</td><td>fraza-matka; dziś #1 w Google to <b>nex-group.pl</b></td></tr>
+        <tr><td class="model-name">*+ olx (wszystkie warianty)</td><td class="num">~8 700 łącznie</td><td class="num">31–32</td><td class="num">0,13–0,17 zł</td><td>"mini koparka olx", "koparka olx", "olx minikoparka" itd. — OLX jest głównym kanałem odkrycia, większym niż jakakolwiek marka</td></tr>
+        <tr><td class="model-name">minikoparka kubota</td><td class="num">1 900</td><td class="num">18</td><td class="num">0,08 zł</td><td>marka silnika liczy się dla kupujących bardziej niż marka koparki</td></tr>
+        <tr><td class="model-name">minikoparki używane / używane tanie</td><td class="num">2 300 łącznie</td><td class="num">9–16</td><td class="num">0,10–0,11 zł</td><td>duży popyt, bardzo niska trudność — nikt z listy z sekcji 02 tego mocno nie zagospodarował</td></tr>
+        <tr><td class="model-name">chińskie minikoparki</td><td class="num">720</td><td class="num">10</td><td class="num">0,26 zł</td><td>ludzie <i>wprost</i> szukają "chińskich" — nisza wolna od silnej konkurencji, nikt nie ukrywa pochodzenia w treści strony</td></tr>
+        <tr><td class="model-name">mini koparka z chin</td><td class="num">590</td><td class="num">19</td><td class="num">0,48 zł</td><td>najwyższy CPC w zestawie — silna intencja zakupowa research/comparison</td></tr>
+        <tr><td class="model-name">minikoparka jcb</td><td class="num">880</td><td class="num">11</td><td class="num">0,12 zł</td><td>ludzie szukają po nazwie znanej marki, mimo że kupują często zamiennik</td></tr>
+        <tr><td class="model-name">minikoparka chińska</td><td class="num">720</td><td class="num">11</td><td class="num">0,30 zł</td><td>bliski wariant frazy powyżej, podobnie niska trudność</td></tr>
+        <tr><td class="model-name">minikoparka cena / nowa</td><td class="num">720 / 480</td><td class="num">13 / 21</td><td class="num">0,08–0,25 zł</td><td>intencja "ile to kosztuje" — dobre pod stronę z realnymi cenami, nie "zapytaj o wycenę"</td></tr>
+        <tr><td class="model-name">minikoparka otomoto</td><td class="num">590</td><td class="num">31</td><td class="num">0,08 zł</td><td>Otomoto to realny, choć mniejszy niż OLX, drugi kanał odkrycia</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="class-block">
+    <div class="class-top">
+      <div><div class="class-title">Ranking widoczności marek</div><div class="evox-models">Szacowany organiczny ruch/mies. i liczba słów kluczowych, w kolejności od lidera</div></div>
+    </div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Domena</th><th class="num">Ruch org./mies.</th><th class="num">Słowa kluczowe</th><th>Uwaga</th></tr></thead>
+      <tbody>
+        <tr><td><a class="src-link" href="https://sklep.nex-group.pl/kategoria/maszyny/mini-koparki/" target="_blank" rel="noopener">nex-group.pl</a></td><td class="num">14 417</td><td class="num">507</td><td>zdecydowany lider — jedna strona kategorii łapie #1 dla samego słowa "minikoparka"; marka własna "NEX", szerokie portfolio (koparki, ładowarki, wozidła)</td></tr>
+        <tr><td><a class="src-link" href="https://bergerkraus.pl/" target="_blank" rel="noopener">bergerkraus.pl</a></td><td class="num">4 871</td><td class="num">537</td><td>najgęstsza siatka stron produktowych i akcesoriów — wygrywa długi ogon ("osprzęt do minikoparki" itd.)</td></tr>
+        <tr><td><a class="src-link" href="https://kraftmachines.pl/" target="_blank" rel="noopener">kraftmachines.pl</a></td><td class="num">4 188</td><td class="num">395</td><td>—</td></tr>
+        <tr><td><a class="src-link" href="https://kingway.pl/" target="_blank" rel="noopener">kingway.pl</a></td><td class="num">3 949</td><td class="num">434</td><td>domena inna niż kingwaypoland.pl znaleziona w sekcji 02 — ta sama marka, dwie strony</td></tr>
+        <tr><td><a class="src-link" href="https://everun-polska.pl/" target="_blank" rel="noopener">everun-polska.pl</a></td><td class="num">3 790</td><td class="num">338</td><td>—</td></tr>
+        <tr><td><a class="src-link" href="https://importerkoparek.eu/" target="_blank" rel="noopener">importerkoparek.eu</a></td><td class="num">3 540</td><td class="num">367</td><td>drugi adres Kingway</td></tr>
+        <tr><td><a class="src-link" href="https://doltech.pl/" target="_blank" rel="noopener">doltech.pl</a></td><td class="num">3 212</td><td class="num">612</td><td>nowa marka w tym zestawieniu, nie trafiła do sekcji 02 — warto sprawdzić ofertę</td></tr>
+        <tr><td><a class="src-link" href="https://mimet.pl/" target="_blank" rel="noopener">mimet.pl</a></td><td class="num">2 728</td><td class="num">464</td><td>jw.</td></tr>
+        <tr><td><a class="src-link" href="https://www.schmidtmachinery.pl/koparki/" target="_blank" rel="noopener">schmidtmachinery.pl</a></td><td class="num">2 185</td><td class="num">203</td><td>—</td></tr>
+        <tr><td><a class="src-link" href="https://minikoparkikubota.pl/" target="_blank" rel="noopener">minikoparkikubota.pl</a></td><td class="num">1 320</td><td class="num">374</td><td>mikrowitryna zbudowana wprost pod frazę "minikoparka kubota" — tania, celna taktyka SEO warta skopiowania</td></tr>
+        <tr><td><a class="src-link" href="https://kingwaylubin.com/" target="_blank" rel="noopener">kingwaypoland.pl</a></td><td class="num">731</td><td class="num">53</td><td>trzeci adres tej samej marki</td></tr>
+        <tr><td><a class="src-link" href="https://rippa.pl/" target="_blank" rel="noopener">rippa.pl</a></td><td class="num">357</td><td class="num">50</td><td>słaba organiczna widoczność, ale dokupuje ruch płatny (21 słów, ~451 wejść/mies. z reklam) — inna strategia niż reszta zestawienia</td></tr>
+        <tr><td><a class="src-link" href="https://apsmachines.pl/" target="_blank" rel="noopener">apsmachines.pl</a></td><td class="num">204</td><td class="num">113</td><td>sprzedaje głównie przez OLX/Allegro, słaba własna widoczność w Google</td></tr>
+        <tr><td><a class="src-link" href="https://guntershop.pl/" target="_blank" rel="noopener">guntershop.pl</a></td><td class="num">98</td><td class="num">70</td><td>najsłabsza widoczność mimo rozbudowanej oferty — potwierdza, że sprzedaje głównie przez Allegro</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="bar-legend" style="margin-top:16px;">Baza: Semrush, wyszukiwarka Google.pl, sierpień 2026. "Ruch org./mies." to szacunek Semrush, nie rzeczywiste dane analityczne właściciela strony.</div>
+  </div>
+</section>
+
+<section id="wielkosc">
+  <div class="section-head">
+    <span class="section-num">07</span>
+    <h2>Jak duży jest ten rynek w Polsce</h2>
+  </div>
+  <p class="section-sub">Nikt nie publikuje wprost liczby sprzedawanych rocznie minikoparek w Polsce — to nie jest kategoria, którą GUS czy urząd celny raportuje osobno. Dlatego zebrałem to z kilku niezależnych od Semrush źródeł branżowych (CECE, dane importowe, komunikaty producentów) i dołożyłem sygnał popytu z Semrush jako uzupełnienie, żeby otrzymać rozsądnie uzasadniony przedział, a nie zgadywankę.</p>
+
+  <div class="fact-cols">
+    <div class="fact-col known">
+      <h4>Wiemy na pewno</h4>
+      <ul>
+        <li>Polska to <b>4%</b> europejskiej sprzedaży sprzętu budowlanego w 2025 r. (Niemcy 23%, UK 12%, Francja 12%, Włochy 11%)<span class="src">CECE Annual Economic Report, luty 2026</span></li>
+        <li>Import koparek do Polski (wszystkie wielkości) wzrósł o <b>23,5%</b> r/r w 2024, CAGR <b>~19%/rok</b> w latach 2020–2024<span class="src">Volza / 6Wresearch</span></li>
+        <li>Polska mieści się w grupie krajów importujących <b>&gt;4000 koparek rocznie</b><span class="src">Volza, zestawienie importerów</span></li>
+        <li>Chiny to <b>49%</b> światowego eksportu koparek (shipments, III 2023–II 2024)<span class="src">dane branżowe cytowane w prasie</span></li>
+        <li>Yanmar CE: sprzedaż minikoparek w Polsce <b>+21%</b> r/r w 2024, udział rynkowy <b>11,2%</b> na koniec roku; Polska to ich 2. co do wielkości rynek w regionie CE4 po Niemczech<span class="src">atbudownictwo.pl, wywiad Yanmar CE</span></li>
+        <li>W całej Europie minikoparki + miniładowarki: tylko <b>-1%</b> w 2025 — to efekt "lądowania" po gwałtownym wzroście segmentu w latach 2021–2023, nie zapaść popytu<span class="src">CECE</span></li>
+      </ul>
+    </div>
+    <div class="fact-col derived">
+      <h4>Da się rozsądnie oszacować</h4>
+      <ul>
+        <li>Cały polski rynek maszyn budowlanych (wszystkie typy): <b>~11,7 tys. szt.</b> w 2023 → prognoza <b>~15,1 tys. szt.</b> w 2029, CAGR 4,3%<span class="src">Arizton — dotyczy całej kategorii, nie tylko koparek</span></li>
+        <li>Polski rynek maszyn budowlanych rósł ok. <b>+2%</b> w 2025/2026 wg komentarzy branżowych — wolniej niż import koparek, co sugeruje, że koparki (w tym minikoparki) rosną szybciej niż rynek jako całość<span class="src">atbudownictwo.pl</span></li>
+        <li>Łączny popyt Google na frazy "minikoparka"/"koparka" w Polsce: <b>~42 000 wyszukiwań/mies.</b> (14 800 + 27 100, sekcja 05) — realne zainteresowanie zakupowe, nie tylko fachowa próba</li>
+      </ul>
+    </div>
+    <div class="fact-col unknown">
+      <h4>Czego nikt nie publikuje wprost</h4>
+      <ul>
+        <li>Dokładnej liczby minikoparek (jako osobnej podkategorii wagowej) sprzedawanych rocznie w Polsce — kod celny 8429.52 nie rozróżnia mini od pełnowymiarowych</li>
+        <li>Łącznej wartości polskiego rynku minikoparek w złotówkach</li>
+        <li>Udziału marek "białej etykiety" (jak EVOX, Berger Kraus, Gunter Grossmann) w tym imporcie — GUS/Eurostat widzi tylko kraj pochodzenia, nie markę</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="estimate-box">
+    <div class="figure">2 000–4 000<small>szt. / rok, szacunek</small></div>
+    <p><b>Szacunkowa wielkość polskiego rynku minikoparek (do ok. 3,5 t):</b> jeśli minikoparki stanowią, tak jak na dojrzałych rynkach zachodnioeuropejskich, mniej więcej połowę importowanych do Polski koparek liczonych w sztukach (bo tanie kompaktowe maszyny dominują liczebnie, mimo mniejszego udziału wartościowego), a Polska importuje &gt;4000 koparek rocznie — realny rynek minikoparek to prawdopodobnie rząd wielkości <b>2000–4000 sztuk rocznie</b>. Przy średniej cenie detalicznej z sekcji 01 (20–80 tys. zł netto) odpowiada to szacunkowo <b>80–250 mln zł</b> obrotu rocznie w tym segmencie. To wyliczenie z dwóch niepewnych przedziałów, więc traktuj je jako rząd wielkości, nie twardą liczbę — ale rząd wielkości, w którym miejsce dla kolejnego gracza (EVOX) zdecydowanie jest, biorąc pod uwagę, ilu importerów białej etykiety już w tym segmencie działa (sekcja 02).</p>
+  </div>
+</section>
+
+<section id="wnioski">
+  <div class="section-head">
+    <span class="section-num">08</span>
+    <h2>Wnioski</h2>
+  </div>
+  <ul class="takeaway-list">
+    <li>
+      <span class="n">01</span>
+      <div><h4>Model biznesowy EVOX jest już standardem branży, nie wyjątkiem</h4><p>APS, Berger Kraus, Schmidt, STIMA, Günter Grossmann, Kingway — to wszystko ten sam schemat: chińska maszyna, zachodnio brzmiąca nazwa własna, sprzedaż przez własny sklep + Allegro/OLX. Konkurencja nie jest "producentami", tylko innymi importerami o identycznym modelu co EVOX.</p></div>
+    </li>
+    <li>
+      <span class="n">02</span>
+      <div><h4>Największe pole na marżę jest w najmniejszych maszynach</h4><p>W klasie 0,6–0,9 t koszt EVOX to ok. 8,2–9,0 tys. zł, a rynek sprzedaje porównywalne maszyny za 17,9–32 tys. zł — czyli 2–3,5× koszt. W klasie 2 t proporcja jest podobna (koszt ~32–38 tys. zł vs rynek 69–92 tys. zł), więc EVOX nie musi konkurować ceną najniższą, tylko dociągnąć wycenę do poziomu rynku.</p></div>
+    </li>
+    <li>
+      <span class="n">03</span>
+      <div><h4>Silnik marki (Kubota/Yanmar/Perkins) to główny czynnik różnicujący cenę w danej klasie wagowej</h4><p>W obrębie tej samej wagi maszyny z silnikiem generycznym (KOOP, Loncin, Changchai) kosztują wyraźnie mniej niż te same konstrukcje z Kubotą/Yanmarem/Perkinsem — np. Kingway YAMA H12K: 32 900 zł z KOOP vs 48 900–58 917 zł z Yanmar/Kubota. EVOX ma już oba warianty w ofercie (np. EX18M vs EX18M-K) — to pasuje do tego, jak realnie różnicuje się rynek.</p></div>
+    </li>
+    <li>
+      <span class="n">04</span>
+      <div><h4>Górna klasa wagowa (2,7 t+) jest najsłabiej pokryta cenowo publicznie</h4><p>Schmidt AR280/AR360 i część oferty Kingway/APS w tym segmencie nie publikują cen wprost ("na zapytanie") — to sygnał, że w tej klasie ceny ustala się indywidualnie/negocjacyjnie, więc punkt odniesienia 129 500 zł za "Kubota Power" XE27E (2,7 t) może być zawyżony względem tego, co realnie można wynegocjować.</p></div>
+    </li>
+    <li>
+      <span class="n">05</span>
+      <div><h4>Reputacja marki jest realnym ryzykiem, nie tylko formalnością</h4><p>Jedna z opinii o Günter Grossmann wprost krytykuje markę za to, że jest "100% chińska" i ostrzega przed czasem oczekiwania na części — dokładnie to ryzyko, na jakie wystawiona jest też marka EVOX. Warto zainwestować w widoczną obsługę posprzedażową (części, serwis) jako element różnicujący, bo to pierwsze, co klienci sprawdzają w opiniach.</p></div>
+    </li>
+    <li>
+      <span class="n">06</span>
+      <div><h4>RIPPA pokazuje, że "zawsze Kubota" wcale nie musi znaczyć drogo</h4><p>Przy identycznym silniku i wadze (Kubota D722, ok. 1,3 t) Schmidt AR120 sprzedaje za 49 900–55 900 zł, a RIPPA R10 ECO za 25 099–26 799 zł — prawie dwa razy taniej, mimo że obie maszyny deklarują tę samą, prawdziwą Kubotę. To realny punkt odniesienia: jeśli EVOX chce grać kartą "prawdziwy silnik markowy" w wariantach -K, RIPPA pokazuje, jak nisko można ten segment wycenić i wciąż zarabiać — a jednocześnie jak łatwo Schmidt/STIMA mogą zostać podbite ceną przy tej samej wiarygodności silnika.</p></div>
+    </li>
+  </ul>
+</section>
+
+<footer>
+  <div><strong>Metodologia:</strong> dane zebrane z wyszukiwań i podstron sklepów/ogłoszeń w sierpniu 2026. Ceny zmieniają się często i część sklepów nie publikuje cen wprost ("na zapytanie") — traktuj to jako mapę rynku, nie wiążącą ofertę.</div>
+  <div>Ceny EVOX (koszt własny) pochodzą z wewnętrznego arkusza kalkulacji FOB Qingdao + transport, bez marży i bez VAT.</div>
+  <div>Część cen konkurencji to netto, część brutto (z VAT) — oznaczone tam, gdzie źródło to podawało wprost; przy braku oznaczenia zweryfikuj bezpośrednio w ogłoszeniu przed decyzją.</div>
+</footer>
+
+</div>
